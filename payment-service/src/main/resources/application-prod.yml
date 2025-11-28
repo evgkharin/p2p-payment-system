@@ -48,12 +48,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,env,loggers,prometheus
-  metrics:
-    tags:
-      application: ${spring.application.name}
-      profile: ${spring.profiles.active}
-  prometheus:
-    metrics:
-      export:
-        enabled: true
+        include: health,info,prometheus  # Только публичные endpoints
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized  # Детали только для авторизованных
+  health:
+    redis:
+      enabled: true
+    db:
+      enabled: true
+
+# Spring Security конфигурация (добавится в модуле Security)
+  security:
+    user:
+      name: admin
+      password: ${ACTUATOR_PASSWORD:changeme}
