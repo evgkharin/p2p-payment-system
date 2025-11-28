@@ -40,6 +40,28 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Validation API
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // MapStruct для маппинга DTO
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    // Lettuce (Redis client) - уже включен в spring-boot-starter-data-redis
+    // но если нужна явная версия:
+    // implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
+
+    // Prometheus метрики
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+}
+
+bootJar {
+    archiveBaseName = 'payment-service'
+    archiveVersion = project.version
+}
+
+springBoot {
+    buildInfo()
 }
 
 tasks.named('test') {
