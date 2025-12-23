@@ -44,9 +44,10 @@ spring:
   # Liquibase миграции
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml
+    change-log: classpath:db/changelog/changelog-master.yaml
     default-schema: public
     drop-first: false  # ВАЖНО! Не удалять схему при старте
+    contexts: dev  # Выполнять миграции с context: dev
 
 # Логирование SQL с параметрами
 logging:

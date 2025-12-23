@@ -18,10 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(name = "phone_number", nullable = false, unique = true, length = 20)
+    @Column(name = "password_hash", nullable = false, unique = true, length = 255)
     private String phoneNumber;
 
     @Column(name = "first_name", nullable = false, length = 100)
@@ -40,6 +40,9 @@ public class User {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at", nullable = true)
+    private LocalDateTime deleted_at;
 
     @PrePersist
     protected void onCreate() {

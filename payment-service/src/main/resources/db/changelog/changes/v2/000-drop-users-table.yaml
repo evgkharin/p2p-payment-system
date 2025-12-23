@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000-drop-users-table
+      author: Evgeniy Kharin
+      changes:
+        - dropTable:
+            tableName: users
+            cascadeConstraints: true

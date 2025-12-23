@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-transfer-limits-table
+      author: Evgeniy Kharin
+      changes:
+        - createTable:
+            tableName: transfer_limits
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: wallet_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_single_transfer
+                  type: DECIMAL(19,2)
+              - column:
+                  name: max_daily_amount
+                  type: DECIMAL(19,2)
+              - column:
+                  name: max_daily_count
+                  type: INTEGER
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: transfer_limits
+            baseColumnNames: wallet_id
+            constraintName: fk_transfer_limits_wallets
+            referencedTableName: wallets
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addUniqueConstraint:
+            tableName: transfer_limits
+            columnNames: wallet_id
+            constraintName: uq_transfer_limits_wallets
+
+        - createIndex:
+            indexName: idx_transfer_limits_wallet_id
+            tableName: transfer_limits
+            columns:
+              - column:
+                  name: wallet_id
+            unique: true
+
+      rollback:
+        - dropTable:
+            tableName: transfer_limits

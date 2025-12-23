@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-transactions-table
+      author: Evgeniy Kharin
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_transactions
+                    nullable: false
+              - column:
+                  name: from_wallet_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: to_wallet_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: idempotency_key
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: uq_transactions_idempotency_key
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: completed_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: from_wallet_id
+            constraintName: fk_transactions_from_wallet
+            referencedTableName: wallets
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: to_wallet_id
+            constraintName: fk_transactions_to_wallet
+            referencedTableName: wallets
+            referencedColumnNames: id
+
+        - createIndex:
+            indexName: idx_transactions_from_wallets
+            tableName: transactions
+            columns:
+              - column:
+                  name: from_wallet_id
+
+        - createIndex:
+            indexName: idx_transactions_to_wallets
+            tableName: transactions
+            columns:
+              - column:
+                  name: to_wallet_id
+
+        - createIndex:
+            indexName: idx_transactions_status_created
+            tableName: transactions
+            columns:
+              - column:
+                  name: status
+              - column:
+                  name: created_at
+                  descending: true
+
+      rollback:
+        - dropTable:
+            tableName: transactions

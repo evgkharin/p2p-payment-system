@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-wallets-table
+      author: Evgeniy Kharin
+      changes:
+        - createTable:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wallet_number
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  defaultValue: ACTIVE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: wallets
+            baseColumnNames: user_id
+            constraintName: fk_wallets_users
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - addUniqueConstraint:
+            tableName: wallets
+            columnNames: user_id, currency
+            constraintName: uq_wallets_user_currency
+
+        - createIndex:
+            indexName: idx_wallets_user_id
+            tableName: wallets
+            columns:
+              - column:
+                  name: user_id
+
+        - createIndex:
+            indexName: idx_wallets_currency
+            tableName: wallets
+            columns:
+              - column:
+                  name: currency
+
+        - createIndex:
+            indexName: idx_wallets_status
+            tableName: wallets
+            columns:
+              - column:
+                  name: status
+
+      rollback:
+        - dropTable:
+            tableName: wallets
