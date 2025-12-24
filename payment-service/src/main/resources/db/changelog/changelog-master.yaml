@@ -14,3 +14,9 @@ databaseChangeLog:
       file: db/changelog/changes/v2/003-create-transactions-table.yaml
   - include:
       file: db/changelog/changes/v2/004-create-transfer-limits-table.yaml
+  - include:
+      file: db/changelog/changes/v2/005-insert-test-users.yaml
+  - include:
+      file: db/changelog/changes/v2/006-insert-test-wallets.yaml
+  - include:
+      file: db/changelog/changes/v2/007-insert-test-transactions.yaml

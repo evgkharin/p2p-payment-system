@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-insert-test-users
+      author: Evgeniy kharin
+      context: dev  # Выполнится только в dev окружении
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "john.doe@example.com"
+              - column:
+                  name: password_hash
+                  value: "abba0b6ff456806bab66baed93e6d9c4"
+              - column:
+                  name: first_name
+                  value: "John"
+              - column:
+                  name: last_name
+                  value: "Doe"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: updated_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "jane.smith@example.com"
+              - column:
+                  name: password_hash
+                  value: "66a4f17a8a7636c69b44413ff9a2dded"
+              - column:
+                  name: first_name
+                  value: "Jane"
+              - column:
+                  name: last_name
+                  value: "Smith"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: updated_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+      rollback:
+        - delete:
+            tableName: users
+            where: email IN ('john.doe@example.com', 'jane.smith@example.com')

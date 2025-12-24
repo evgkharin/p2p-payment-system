@@ -1,0 +1,104 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-insert-test-wallets
+      author: Evgeniy kharin
+      context: dev  # Выполнится только в dev окружении
+      changes:
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: |
+                    (SELECT u.id 
+                       FROM users u
+                      WHERE u.email = 'john.doe@example.com')
+              - column:
+                  name: currency
+                  value: "RUB"
+              - column:
+                  name: balance
+                  value: 0
+              - column:
+                  name: wallet_number
+                  value: "WALLET1"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: updated_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: |
+                    (SELECT u.id 
+                       FROM users u
+                      WHERE u.email = 'john.doe@example.com')
+              - column:
+                  name: currency
+                  value: "USD"
+              - column:
+                  name: balance
+                  value: 300
+              - column:
+                  name: wallet_number
+                  value: "WALLET2"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: updated_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: |
+                    (SELECT u.id 
+                       FROM users u
+                      WHERE u.email = 'jane.smith@example.com')
+              - column:
+                  name: currency
+                  value: "RUB"
+              - column:
+                  name: balance
+                  value: 1000
+              - column:
+                  name: wallet_number
+                  value: "WALLET3"
+              - column:
+                  name: status
+                  value: "FROZEN"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: updated_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+      rollback:
+        - delete:
+            tableName: wallets
+            where: user_id IN (SELECT u.id FROM users u WHERE u.email IN ('john.doe@example.com', 'jane.smith@example.com'))

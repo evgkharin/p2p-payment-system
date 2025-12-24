@@ -39,7 +39,7 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 2
-          max-wait: -1ms
+          max-wait: 1000ms
 
   # Liquibase миграции
   liquibase:

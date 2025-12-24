@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-insert-test-wallets
+      author: Evgeniy kharin
+      context: dev  # Выполнится только в dev окружении
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: from_wallet_id
+                  valueComputed: |
+                    (SELECT w.id 
+                       FROM wallets w
+                      WHERE w.wallet_number = 'WALLET1')
+              - column:
+                  name: to_wallet_id
+                  valueComputed: |
+                    (SELECT w.id 
+                       FROM wallets w
+                      WHERE w.wallet_number = 'WALLET3')
+              - column:
+                  name: amount
+                  value: 400
+              - column:
+                  name: currency
+                  value: "RUB"
+              - column:
+                  name: type
+                  value: "TRANSFER"
+              - column:
+                  name: status
+                  value: "COMPLETED"
+              - column:
+                  name: description
+                  value: "our funds"
+              - column:
+                  name: idempotency_key
+                  value: "71715d03-1152-45bf-8991-264f213c6c2a"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: completed_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: from_wallet_id
+                  valueComputed: |
+                    (SELECT w.id 
+                       FROM wallets w
+                      WHERE w.wallet_number = 'WALLET1')
+              - column:
+                  name: to_wallet_id
+                  valueComputed: |
+                    (SELECT w.id 
+                       FROM wallets w
+                      WHERE w.wallet_number = 'WALLET3')
+              - column:
+                  name: amount
+                  value: 600
+              - column:
+                  name: currency
+                  value: "RUB"
+              - column:
+                  name: type
+                  value: "TRANSFER"
+              - column:
+                  name: status
+                  value: "COMPLETED"
+              - column:
+                  name: description
+                  value: "returnal"
+              - column:
+                  name: idempotency_key
+                  value: "b7759c3d-b71a-4e7c-8dca-1abfd861ea24"
+              - column:
+                  name: created_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+              - column:
+                  name: completed_at
+                  valueComputed: |
+                    (SELECT CURRENT_TIMESTAMP)
+
+      rollback:
+        - delete:
+            tableName: transactions
